@@ -1,3 +1,5 @@
+__all__: list[str] = ["load", "loadfromfile", "loads"]
+
 import io
 import json
 from decimal import Decimal
