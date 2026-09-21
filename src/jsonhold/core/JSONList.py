@@ -34,7 +34,7 @@ class JSONList(datahold.HoldList[Any]):
 
     def dumpintofile(self: Self, file: str, /, **kwargs: Any) -> None:
         "Dump the data into a UTF-8 encoded JSON file."
-        with open(file, "w", encoding="utf-8") as stream:
+        with open(file, "wb") as stream:
             self.dump(stream, **kwargs)
 
     def dumps(self: Self, /, **kwargs: Any) -> str:

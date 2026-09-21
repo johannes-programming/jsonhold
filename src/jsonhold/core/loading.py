@@ -23,7 +23,7 @@ def load(
 
 def loadfromfile(file: str, /, **kwargs: Any) -> JSONValue:
     "Load a JSON object from a UTF-8 encoded file."
-    with open(file, "rb", encoding="utf-8") as stream:
+    with open(file, "rb") as stream:
         return load(stream, **kwargs)
 
 
