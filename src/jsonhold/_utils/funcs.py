@@ -22,15 +22,15 @@ class SupportsKeysAndGetitem[Value](Protocol):
     def __getitem__(self: Self, key: Hashable, /) -> Value: ...
 
 
-def gendict[Value](
-    data: SupportsKeysAndGetitem[Value] | Iterable[tuple[Hashable, Value]],
+def gendict(
+    data: Any,
     /,
     *,
     dump: bool = False,
-) -> Generator[tuple[str, Value], None, None]:
+) -> Generator[tuple[str, Any], None, None]:
     "Generate string-keyed items from mapping data for JSON."
     x: Hashable
-    y: Value
+    y: Any
     for x, y in dict(data).items():
         yield str(x), getvalue(y, dump=dump)
 
