@@ -4,8 +4,9 @@ from __future__ import annotations
 
 __all__: list[str] = ["JSONList"]
 
+import io
 import json
-from collections.abc import Iterable
+from collections import abc
 from typing import Any, Self
 
 import datahold
@@ -14,17 +15,20 @@ from .._utils.funcs import genlist
 
 
 class JSONList(datahold.HoldList[Any]):
+
+    __slots__ = ()
+
     @property
-    def data(self: Self) -> tuple[Any, ...]:
+    def data(self: Self, /) -> tuple[Any, ...]:
         "Return the held list data as tuple."
         return self._data
 
     @data.setter
-    def data(self: Self, value: Iterable[Any]) -> None:
+    def data(self: Self, value: abc.Iterable[Any], /) -> None:
         "Set the held list data from an iterable."
         self._data = tuple(genlist(value, dump=False))
 
-    def dump(self: Self, stream: Any, /, **kwargs: Any) -> None:
+    def dump(self: Self, stream: io.BufferedWriter, /, **kwargs: Any) -> None:
         "Dump the data into a text stream."
         json.dump(list(genlist(self._data, dump=True)), stream, **kwargs)
 
@@ -33,28 +37,6 @@ class JSONList(datahold.HoldList[Any]):
         with open(file, "w", encoding="utf-8") as stream:
             self.dump(stream, **kwargs)
 
-    def dumps(self: Self, **kwargs: Any) -> str:
+    def dumps(self: Self, /, **kwargs: Any) -> str:
         "Dump the data as a string."
         return json.dumps(list(genlist(self._data, dump=True)), **kwargs)
-
-    @classmethod
-    def load(cls: type[Self], stream: Any, /, **kwargs: Any) -> Self:
-        "Load a JSON array from a text stream."
-        value: Any = json.load(stream, **kwargs)
-        if not isinstance(value, list):
-            raise TypeError("JSONList can only load a JSON array")
-        return cls(value)
-
-    @classmethod
-    def loadfromfile(cls: type[Self], file: str, /, **kwargs: Any) -> Self:
-        "Load a JSON array from a UTF-8 encoded file."
-        with open(file, "r", encoding="utf-8") as stream:
-            return cls.load(stream, **kwargs)
-
-    @classmethod
-    def loads(cls: type[Self], string: str, /, **kwargs: Any) -> Self:
-        "Load a JSON array from a string."
-        value: Any = json.loads(string, **kwargs)
-        if not isinstance(value, list):
-            raise TypeError("JSONList can only load a JSON array")
-        return cls(value)
