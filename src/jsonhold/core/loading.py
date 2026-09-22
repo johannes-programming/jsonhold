@@ -8,29 +8,31 @@ from typing import Any
 from .._utils.funcs import getvalue
 from ..core.JSONDict import JSONDict
 from ..core.JSONList import JSONList
+from pathlib import Path
 
 type JSONValue = JSONDict | JSONList | None | str | int | Decimal
 
 
 def load(
-    stream: io.BufferedReader,
+    stream: io.BufferedReader| io.TextIOWrapper,
     /,
     **kwargs: Any,
 ) -> JSONValue:
     "Load a JSON object from a text stream."
-    return getvalue(json.load(stream, **kwargs))
+    return getvalue(json.load(stream, parse_float=Decimal, **kwargs))
 
 
-def loadfromfile(file: str, /, **kwargs: Any) -> JSONValue:
+def loadfromfile(file: Path | str, /, **kwargs: Any) -> JSONValue:
     "Load a JSON object from a UTF-8 encoded file."
-    with open(file, "rb") as stream:
+    stream: io.TextIOWrapper
+    with open(file, "r") as stream:
         return load(stream, **kwargs)
 
 
 def loads(
-    string: str,
+    string: str | bytes | bytearray,
     /,
     **kwargs: Any,
 ) -> JSONValue:
     "Load a JSON object from a string."
-    return getvalue(json.loads(string, **kwargs))
+    return getvalue(json.loads(string, parse_float=Decimal, **kwargs))

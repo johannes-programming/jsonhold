@@ -4,19 +4,21 @@ from __future__ import annotations
 
 __all__: list[str] = ["JSONList"]
 
-import io
-import json
 from collections import abc
 from typing import Any, Self
 
 import datahold
 
 from .._utils.funcs import genlist
+from .JSONCollection import JSONCollection
 
-
-class JSONList(datahold.HoldList[Any]):
+class JSONList(datahold.HoldList[Any], JSONCollection[Any]):
 
     __slots__ = ()
+
+    def _dump(self: Self, /) -> list[Any]:
+        "Return the held list data as a list."
+        return list(genlist(self._data, dump=True))
 
     @property
     def data(self: Self, /) -> tuple[Any, ...]:
@@ -24,19 +26,6 @@ class JSONList(datahold.HoldList[Any]):
         return self._data
 
     @data.setter
-    def data(self: Self, value: abc.Iterable[Any], /) -> None:
+    def data(self: Self, data_: abc.Iterable[Any], /) -> None:
         "Set the held list data from an iterable."
-        self._data = tuple(genlist(value, dump=False))
-
-    def dump(self: Self, stream: io.BufferedWriter, /, **kwargs: Any) -> None:
-        "Dump the data into a text stream."
-        json.dump(list(genlist(self._data, dump=True)), stream, **kwargs)
-
-    def dumpintofile(self: Self, file: str, /, **kwargs: Any) -> None:
-        "Dump the data into a UTF-8 encoded JSON file."
-        with open(file, "wb") as stream:
-            self.dump(stream, **kwargs)
-
-    def dumps(self: Self, /, **kwargs: Any) -> str:
-        "Dump the data as a string."
-        return json.dumps(list(genlist(self._data, dump=True)), **kwargs)
+        self._data = tuple(genlist(data_, dump=False))
