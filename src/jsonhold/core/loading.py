@@ -19,7 +19,7 @@ def load(
     **kwargs: Any,
 ) -> JSONValue:
     "Load a JSON object from a text stream."
-    return getvalue(json.load(stream, parse_float=Decimal, **kwargs))
+    return getvalue(json.load(stream, parse_float=Decimal, **kwargs)) # type: ignore[no-any-return]
 
 
 def loadfromfile(file: Path | str, /, **kwargs: Any) -> JSONValue:
@@ -35,4 +35,4 @@ def loads(
     **kwargs: Any,
 ) -> JSONValue:
     "Load a JSON object from a string."
-    return getvalue(json.loads(string, parse_float=Decimal, **kwargs))
+    return getvalue(json.loads(string, parse_float=Decimal, **kwargs))# type: ignore[no-any-return]

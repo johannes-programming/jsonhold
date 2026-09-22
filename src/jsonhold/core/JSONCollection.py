@@ -26,7 +26,11 @@ class JSONCollection[Value](abc.Collection[Value]):
         **kwargs: Any,
     ) -> None:
         "Dump the data into a text stream."
-        json.dump(self._dump(), stream, **kwargs)
+        json.dump(
+            self._dump(), 
+            stream, # type: ignore[arg-type]
+            **kwargs,
+        )
 
     def dumpintofile(
         self: Self,
