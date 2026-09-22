@@ -27,8 +27,8 @@ class JSONCollection[Value](abc.Collection[Value]):
     ) -> None:
         "Dump the data into a text stream."
         json.dump(
-            self._dump(), 
-            stream, # type: ignore[arg-type]
+            self._dump(),
+            stream,  # type: ignore[arg-type]
             **kwargs,
         )
 
