@@ -8,8 +8,8 @@ import io
 import json
 from abc import abstractmethod
 from collections import abc
-from typing import Any, Self
 from pathlib import Path
+from typing import Any, Self
 
 
 class JSONCollection[Value](abc.Collection[Value]):
@@ -17,9 +17,8 @@ class JSONCollection[Value](abc.Collection[Value]):
     __slots__ = ()
 
     @abstractmethod
-    def _dump(self: Self, /) -> dict[str, Any] | list[Any]:
-        ...
-    
+    def _dump(self: Self, /) -> dict[str, Any] | list[Any]: ...
+
     def dump(
         self: Self,
         stream: io.BufferedWriter | io.TextIOWrapper,
@@ -28,12 +27,12 @@ class JSONCollection[Value](abc.Collection[Value]):
     ) -> None:
         "Dump the data into a text stream."
         json.dump(self._dump(), stream, **kwargs)
-    
+
     def dumpintofile(
-            self: Self, 
-            file: Path | str, 
-            /, 
-            **kwargs: Any,
+        self: Self,
+        file: Path | str,
+        /,
+        **kwargs: Any,
     ) -> None:
         "Dump the data into a JSON file."
         stream: io.TextIOWrapper

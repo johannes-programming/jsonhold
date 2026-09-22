@@ -12,6 +12,7 @@ import datahold
 from .._utils.funcs import genlist
 from .JSONCollection import JSONCollection
 
+
 class JSONList(datahold.HoldList[Any], JSONCollection[Any]):
 
     __slots__ = ()

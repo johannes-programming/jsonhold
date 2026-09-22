@@ -3,18 +3,18 @@ __all__: list[str] = ["load", "loadfromfile", "loads"]
 import io
 import json
 from decimal import Decimal
+from pathlib import Path
 from typing import Any
 
 from .._utils.funcs import getvalue
 from ..core.JSONDict import JSONDict
 from ..core.JSONList import JSONList
-from pathlib import Path
 
 type JSONValue = JSONDict | JSONList | None | str | int | Decimal
 
 
 def load(
-    stream: io.BufferedReader| io.TextIOWrapper,
+    stream: io.BufferedReader | io.TextIOWrapper,
     /,
     **kwargs: Any,
 ) -> JSONValue:
